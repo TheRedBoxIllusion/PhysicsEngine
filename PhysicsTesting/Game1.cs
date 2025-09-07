@@ -529,11 +529,6 @@ namespace PhysicsTesting
             kX = 0;
             kY = 0.01;
 
-
-            velocityX = 4.1;
-            
-            bounceCoefficient = 0.75;
-
             collider = new Rectangle(0, 0, (int)(0.9 * wc.pixelsPerBlock), 2 * wc.pixelsPerBlock);
         }
     }
