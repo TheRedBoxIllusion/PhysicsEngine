@@ -76,18 +76,23 @@ namespace PhysicsTesting
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            double horizontalAcceleration = 70; //Really large acceleration so that the kX can be high and the inputs are still responsive
+            //As the game's framerate changes, the small impulses caused by the added acceleration changes.
+            //So the added values must change with the elapsed game time
+
+
+            double horizontalAcceleration = 1; //The acceleration in m/s^-2
+            double jumpAcceleration = 5;
 
             if (Keyboard.GetState().IsKeyDown(Keys.D)) {
                 
-                player.accelerationX += horizontalAcceleration;
+                player.accelerationX += horizontalAcceleration / gameTime.ElapsedGameTime.TotalSeconds;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A)) {
-                player.accelerationX -= horizontalAcceleration;
+                player.accelerationX -= horizontalAcceleration / gameTime.ElapsedGameTime.TotalSeconds;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.W)) {
                 if (player.isOnGround) {
-                    player.accelerationY += 250;
+                    player.accelerationY += jumpAcceleration / gameTime.ElapsedGameTime.TotalSeconds;
                 }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.R)) {
@@ -526,7 +531,7 @@ namespace PhysicsTesting
             y = 10.0;
             //It's weird because k is unitless, however the fact that I'm in the world of pixels/second means that realistic drag coefficients don't work very well. 
             //I think it's because v^2 has a massive change with the pixel to block ratio. My math's is probably just wrong, so I'll merely account for it by using unrealistic numbers
-            kX = 0;
+            kX = 3;
             kY = 0.01;
 
             collider = new Rectangle(0, 0, (int)(0.9 * wc.pixelsPerBlock), 2 * wc.pixelsPerBlock);
